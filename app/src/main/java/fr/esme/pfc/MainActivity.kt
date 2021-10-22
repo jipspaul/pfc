@@ -3,6 +3,7 @@ package fr.esme.pfc
 import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -17,11 +18,16 @@ class MainActivity : AppCompatActivity() {
     lateinit var actionPaper: Button
     lateinit var actionScissor: Button
     lateinit var actionRock: Button
+    lateinit var buttonStartGame: Button
 
     //Score
     lateinit var firstPointImageView: ImageView
     lateinit var secondPointImageView: ImageView
     lateinit var thirdPointImageView: ImageView
+    lateinit var scorePlayerTwoTextView: TextView
+
+    //TextView
+    lateinit var textView: TextView
 
     val gamePlayEngine: GamePlayEngine = GamePlayEngine()
 
@@ -33,10 +39,17 @@ class MainActivity : AppCompatActivity() {
         actionPaper = findViewById(R.id.actionPaperButton)
         actionScissor = findViewById(R.id.actionScissorButton)
         actionRock = findViewById(R.id.actionRockButton)
+        buttonStartGame = findViewById(R.id.buttonStartGame)
+
+        //textview
+        textView = findViewById(R.id.textView)
 
         firstPointImageView = findViewById(R.id.firstPoint)
         secondPointImageView = findViewById(R.id.secondPoint)
         thirdPointImageView = findViewById(R.id.thirdPoint)
+
+        scorePlayerTwoTextView = findViewById(R.id.scorePlayerTwo)
+
 
         //onClick
         actionPaper.setOnClickListener {
@@ -56,11 +69,122 @@ class MainActivity : AppCompatActivity() {
 
         }
 
+        buttonStartGame.setOnClickListener {
+            gamePlayEngine.startGame()
+            startTimer()
+            //show button
+
+            //Hide buttons game
+            actionPaper.visibility = View.VISIBLE
+            actionScissor.visibility = View.VISIBLE
+            actionRock.visibility = View.VISIBLE
+
+            showScore(0)
+            buttonStartGame.visibility = View.GONE
+
+
+        }
+
+    }
+
+    var OFFSET_INTERVAL: Long = 2000
+    var NUMBER_OF_ROUND = 3
+    var OFFSET_GAME: Long = OFFSET_INTERVAL*5*NUMBER_OF_ROUND
+
+    enum class GAME_MANAGEMENT { PLAY,ONE, TWO,THREE,FINISH}
+
+    var gameManagement : GAME_MANAGEMENT = GAME_MANAGEMENT.PLAY
+
+
+    private fun startTimer(){
+        val timer = object: CountDownTimer(OFFSET_GAME, OFFSET_INTERVAL) {
+            override fun onTick(millisUntilFinished: Long) {
+                textView.text =  millisUntilFinished.toString()
+
+
+                //Show button only during timer
+                when(gameManagement){
+                    GAME_MANAGEMENT.PLAY -> {
+                        textView.text = "JOUEZ"
+                        gameManagement = GAME_MANAGEMENT.ONE
+                        buttonGameVisibility(false)
+                    }
+                    GAME_MANAGEMENT.ONE -> {
+                        textView.text = "3"
+                        gameManagement = GAME_MANAGEMENT.TWO
+                        buttonGameVisibility(true)
+
+                    }
+                    GAME_MANAGEMENT.TWO -> {
+                        textView.text = "2"
+                        gameManagement = GAME_MANAGEMENT.THREE
+                        buttonGameVisibility(true)
+
+                    }
+                    GAME_MANAGEMENT.THREE -> {
+                        textView.text = "1"
+                        gameManagement = GAME_MANAGEMENT.FINISH
+                        buttonGameVisibility(true)
+
+                    }
+                    GAME_MANAGEMENT.FINISH -> {
+                        textView.text = "FINI"
+                        gameManagement = GAME_MANAGEMENT.PLAY
+                        buttonGameVisibility(false)
+
+                    }
+                }
+
+            }
+
+            override fun onFinish() {
+                textView.text = "FINISH"
+            }
+        }
+
+        timer.start()
+    }
+
+    private fun showWinner() {
+
+        val textView: TextView = findViewById(R.id.textView)
+
+        when (gamePlayEngine.whoWinTheGame()) {
+            GameResult.USER1WIN -> textView.text = "Joueur1 a Gagné"
+            GameResult.USER2WIN -> textView.text = "Joueur2 a Gagné"
+            GameResult.STILL_PLAYING -> return
+        }
+
+        if (gamePlayEngine.whoWinTheGame() != GameResult.STILL_PLAYING) {
+            //Show button play
+            buttonStartGame.visibility = View.VISIBLE
+
+            //Hide buttons game
+            actionPaper.visibility = View.GONE
+            actionScissor.visibility = View.GONE
+            actionRock.visibility = View.GONE
+        }
+
+    }
+
+    private fun buttonGameVisibility(isVisible : Boolean){
+        if(isVisible){
+            actionPaper.visibility = View.VISIBLE
+            actionScissor.visibility = View.VISIBLE
+            actionRock.visibility = View.VISIBLE
+        } else {
+            actionPaper.visibility = View.GONE
+            actionScissor.visibility = View.GONE
+            actionRock.visibility = View.GONE
+        }
     }
 
     private fun showScore(score: Int) {
 
-        when(score){
+
+        scorePlayerTwoTextView.text = "Score J2: " + gamePlayEngine.game.scoreTwo
+
+        when (score) {
             0 -> {
                 firstPointImageView.visibility = View.GONE
                 secondPointImageView.visibility = View.GONE
@@ -86,10 +210,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-
-
-
-
     }
 
 
@@ -104,6 +224,7 @@ class MainActivity : AppCompatActivity() {
 
         showResult(result)
         showScore(gamePlayEngine.game.scoreOne)
+        showWinner()
     }
 
     private fun showResult(result: RoundResult) {
