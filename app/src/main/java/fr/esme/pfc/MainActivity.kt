@@ -36,6 +36,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        supportActionBar?.hide()
+
         //intialisation
         actionPaper = findViewById(R.id.actionPaperButton)
         actionScissor = findViewById(R.id.actionScissorButton)
@@ -51,50 +53,34 @@ class MainActivity : AppCompatActivity() {
 
         scorePlayerTwoTextView = findViewById(R.id.scorePlayerTwo)
 
-
         //Observer
         gamePlayEngine.liveData.observe(this,
             Observer {
-                when(it){
+                when (it) {
                     GameStateMachine.INITIAL -> showInitialState()
                     GameStateMachine.PLAYING -> showPlayingState()
                     GameStateMachine.FINISH -> showFinishState()
                 }
-        })
+            })
 
 
         //onClick
         actionPaper.setOnClickListener {
-            Log.d("PCF", "Paper")
             play(Actions.PAPER)
         }
 
         actionScissor.setOnClickListener {
-            Log.d("PCF", "Scissor")
             play(Actions.SCISSOR)
 
         }
 
         actionRock.setOnClickListener {
-            Log.d("PCF", "Rock")
             play(Actions.ROCK)
 
         }
 
         buttonStartGame.setOnClickListener {
             gamePlayEngine.startGame()
-            startTimer()
-            //show button
-
-            //Hide buttons game
-            actionPaper.visibility = View.VISIBLE
-            actionScissor.visibility = View.VISIBLE
-            actionRock.visibility = View.VISIBLE
-
-            showScore(0)
-            buttonStartGame.visibility = View.GONE
-
-
         }
 
     }
@@ -224,7 +210,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
     private fun play(action: Actions) {
 
         gamePlayEngine.selectAction(action)
@@ -250,7 +235,6 @@ class MainActivity : AppCompatActivity() {
 
         }
     }
-
 
     fun showPlayingButton(isVisible: Boolean) {
         if (isVisible) {
