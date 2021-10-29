@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.Observer
 
 
 class MainActivity : AppCompatActivity() {
@@ -23,7 +24,6 @@ class MainActivity : AppCompatActivity() {
     //Score
     lateinit var firstPointImageView: ImageView
     lateinit var secondPointImageView: ImageView
-
     lateinit var thirdPointImageView: ImageView
     lateinit var scorePlayerTwoTextView: TextView
 
@@ -50,6 +50,17 @@ class MainActivity : AppCompatActivity() {
         thirdPointImageView = findViewById(R.id.thirdPoint)
 
         scorePlayerTwoTextView = findViewById(R.id.scorePlayerTwo)
+
+
+        //Observer
+        gamePlayEngine.liveData.observe(this,
+            Observer {
+                when(it){
+                    GameStateMachine.INITIAL -> showInitialState()
+                    GameStateMachine.PLAYING -> showPlayingState()
+                    GameStateMachine.FINISH -> showFinishState()
+                }
+        })
 
 
         //onClick
@@ -90,21 +101,21 @@ class MainActivity : AppCompatActivity() {
 
     var OFFSET_INTERVAL: Long = 2000
     var NUMBER_OF_ROUND = 3
-    var OFFSET_GAME: Long = OFFSET_INTERVAL*5*NUMBER_OF_ROUND
+    var OFFSET_GAME: Long = OFFSET_INTERVAL * 5 * NUMBER_OF_ROUND
 
-    enum class GAME_MANAGEMENT { PLAY,ONE, TWO,THREE,FINISH}
+    enum class GAME_MANAGEMENT { PLAY, ONE, TWO, THREE, FINISH }
 
-    var gameManagement : GAME_MANAGEMENT = GAME_MANAGEMENT.PLAY
+    var gameManagement: GAME_MANAGEMENT = GAME_MANAGEMENT.PLAY
 
 
-    private fun startTimer(){
-        val timer = object: CountDownTimer(OFFSET_GAME, OFFSET_INTERVAL) {
+    private fun startTimer() {
+        val timer = object : CountDownTimer(OFFSET_GAME, OFFSET_INTERVAL) {
             override fun onTick(millisUntilFinished: Long) {
-                textView.text =  millisUntilFinished.toString()
+                textView.text = millisUntilFinished.toString()
 
 
                 //Show button only during timer
-                when(gameManagement){
+                when (gameManagement) {
                     GAME_MANAGEMENT.PLAY -> {
                         textView.text = "JOUEZ"
                         gameManagement = GAME_MANAGEMENT.ONE
@@ -168,8 +179,8 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun buttonGameVisibility(isVisible : Boolean){
-        if(isVisible){
+    private fun buttonGameVisibility(isVisible: Boolean) {
+        if (isVisible) {
             actionPaper.visibility = View.VISIBLE
             actionScissor.visibility = View.VISIBLE
             actionRock.visibility = View.VISIBLE
@@ -238,6 +249,71 @@ class MainActivity : AppCompatActivity() {
             RoundResult.DRAW -> textView.text = "DRAW"
 
         }
+    }
+
+
+    fun showPlayingButton(isVisible: Boolean) {
+        if (isVisible) {
+            buttonStartGame.visibility = View.VISIBLE
+        } else {
+            buttonStartGame.visibility = View.INVISIBLE
+        }
+    }
+
+    fun showScoresButton(isVisible: Boolean) {
+        if (isVisible) {
+            firstPointImageView.visibility = View.VISIBLE
+            secondPointImageView.visibility = View.VISIBLE
+            thirdPointImageView.visibility = View.VISIBLE
+            scorePlayerTwoTextView.visibility = View.VISIBLE
+        } else {
+            firstPointImageView.visibility = View.INVISIBLE
+            secondPointImageView.visibility = View.INVISIBLE
+            thirdPointImageView.visibility = View.INVISIBLE
+            scorePlayerTwoTextView.visibility = View.INVISIBLE
+        }
+    }
+
+    fun showInfoScreen(isVisible: Boolean) {
+        if (isVisible) {
+            textView.visibility = View.VISIBLE
+        } else {
+            textView.visibility = View.INVISIBLE
+        }
+    }
+
+    fun showActionButton(isVisible: Boolean) {
+        if (isVisible) {
+            actionPaper.visibility = View.VISIBLE
+            actionScissor.visibility = View.VISIBLE
+            actionRock.visibility = View.VISIBLE
+        } else {
+            actionPaper.visibility = View.INVISIBLE
+            actionScissor.visibility = View.INVISIBLE
+            actionRock.visibility = View.INVISIBLE
+        }
+    }
+
+    /// only playing button shown
+    fun showInitialState() {
+        showPlayingButton(true)
+        showInfoScreen(false)
+        showActionButton(false)
+        showScoresButton(false)
+    }
+
+    fun showPlayingState() {
+        showPlayingButton(false)
+        showInfoScreen(true)
+        showActionButton(true)
+        showScoresButton(true)
+    }
+
+    fun showFinishState() {
+        showPlayingButton(true)
+        showInfoScreen(true)
+        showActionButton(false)
+        showScoresButton(false)
     }
 
 }

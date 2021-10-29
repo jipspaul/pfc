@@ -1,8 +1,19 @@
 package fr.esme.pfc
 
+import androidx.lifecycle.MutableLiveData
 import java.util.*
 
 class GamePlayEngine {
+
+    constructor() {
+        liveData.value = GameStateMachine.INITIAL
+    }
+
+    //State machine
+    var currentGameStateMachine: GameStateMachine = GameStateMachine.INITIAL
+
+    val liveData: MutableLiveData<GameStateMachine> = MutableLiveData()
+
 
     //Create game data
     var game: Game = Game()
@@ -31,8 +42,15 @@ class GamePlayEngine {
 
     fun whoWinTheGame(): GameResult {
         if (game.scoreOne == 3) {
+
+            currentGameStateMachine = GameStateMachine.FINISH
+            liveData.value = GameStateMachine.FINISH
+
             return GameResult.USER1WIN
         } else if (game.scoreTwo == 3) {
+            currentGameStateMachine = GameStateMachine.FINISH
+            liveData.value = GameStateMachine.FINISH
+
             return GameResult.USER2WIN
         } else {
             return GameResult.STILL_PLAYING
@@ -43,10 +61,10 @@ class GamePlayEngine {
         game.scoreOne = 0
         game.scoreTwo = 0
         game.currentRound = 0
-    }
 
-    fun startRound() {
-
+        //chqnge stqte
+        currentGameStateMachine = GameStateMachine.PLAYING;
+        liveData.value = GameStateMachine.PLAYING
     }
 
     fun whoWinRound(
@@ -112,8 +130,7 @@ class GamePlayEngine {
 
         if (result == RoundResult.USER1) {
             game.scoreOne = game.scoreOne + 1
-        }
-        else if (result == RoundResult.USER2) {
+        } else if (result == RoundResult.USER2) {
             game.scoreTwo = game.scoreTwo + 1
         }
 
