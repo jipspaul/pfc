@@ -30,6 +30,10 @@ class MainActivity : AppCompatActivity() {
     //TextView
     lateinit var textView: TextView
 
+    //initial screen
+    lateinit var appTitle: TextView
+    lateinit var logo: ImageView
+
     val gamePlayEngine: GamePlayEngine = GamePlayEngine()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,6 +47,10 @@ class MainActivity : AppCompatActivity() {
         actionScissor = findViewById(R.id.actionScissorButton)
         actionRock = findViewById(R.id.actionRockButton)
         buttonStartGame = findViewById(R.id.buttonStartGame)
+
+        appTitle = findViewById(R.id.appTitle)
+        logo =  findViewById(R.id.logo)
+
 
         //textview
         textView = findViewById(R.id.textView)
@@ -278,9 +286,20 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun showInitialElement(isVisible: Boolean){
+        if (isVisible) {
+            logo.visibility =  View.VISIBLE
+            appTitle.visibility = View.VISIBLE
+        } else {
+            logo.visibility =  View.INVISIBLE
+            appTitle.visibility = View.INVISIBLE
+        }
+    }
+
     /// only playing button shown
     fun showInitialState() {
         showPlayingButton(true)
+        showInitialElement(true)
         showInfoScreen(false)
         showActionButton(false)
         showScoresButton(false)
@@ -288,12 +307,14 @@ class MainActivity : AppCompatActivity() {
 
     fun showPlayingState() {
         showPlayingButton(false)
+        showInitialElement(false)
         showInfoScreen(true)
         showActionButton(true)
         showScoresButton(true)
     }
 
     fun showFinishState() {
+        showInitialElement(false)
         showPlayingButton(true)
         showInfoScreen(true)
         showActionButton(false)
