@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     //Score
     lateinit var firstPointImageView: ImageView
     lateinit var secondPointImageView: ImageView
+
     lateinit var thirdPointImageView: ImageView
     lateinit var scorePlayerTwoTextView: TextView
 
