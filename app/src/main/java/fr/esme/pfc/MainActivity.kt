@@ -1,10 +1,8 @@
 package fr.esme.pfc
 
-import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
@@ -16,16 +14,20 @@ import androidx.lifecycle.Observer
 class MainActivity : AppCompatActivity() {
 
     //Button
-    lateinit var actionPaper: Button
-    lateinit var actionScissor: Button
-    lateinit var actionRock: Button
+    lateinit var actionPaper: ImageButton
+    lateinit var actionScissor: ImageButton
+    lateinit var actionRock: ImageButton
     lateinit var buttonStartGame: Button
 
     //Score
     lateinit var firstPointImageView: ImageView
     lateinit var secondPointImageView: ImageView
     lateinit var thirdPointImageView: ImageView
-    lateinit var scorePlayerTwoTextView: TextView
+
+    lateinit var firstPointPlayerTwoImageView: ImageView
+    lateinit var secondPointPlayerTwoImageView: ImageView
+    lateinit var thirdPointPlayerTwoImageView: ImageView
+
 
     //TextView
     lateinit var textView: TextView
@@ -49,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         buttonStartGame = findViewById(R.id.buttonStartGame)
 
         appTitle = findViewById(R.id.appTitle)
-        logo =  findViewById(R.id.logo)
+        logo = findViewById(R.id.logo)
 
 
         //textview
@@ -59,7 +61,10 @@ class MainActivity : AppCompatActivity() {
         secondPointImageView = findViewById(R.id.secondPoint)
         thirdPointImageView = findViewById(R.id.thirdPoint)
 
-        scorePlayerTwoTextView = findViewById(R.id.scorePlayerTwo)
+        firstPointPlayerTwoImageView = findViewById(R.id.firstPointSecond)
+        secondPointPlayerTwoImageView = findViewById(R.id.secondPointSecond)
+        thirdPointPlayerTwoImageView = findViewById(R.id.thirdPointSecond)
+
 
         //Observer
         gamePlayEngine.liveData.observe(this,
@@ -186,33 +191,55 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showScore(score: Int) {
-
-
-        scorePlayerTwoTextView.text = "Score J2: " + gamePlayEngine.game.scoreTwo
-
-        when (score) {
+        when (gamePlayEngine.game.scoreOne) {
             0 -> {
-                firstPointImageView.visibility = View.GONE
-                secondPointImageView.visibility = View.GONE
-                thirdPointImageView.visibility = View.GONE
+                firstPointImageView.setImageDrawable(getResources().getDrawable((R.drawable.star_grey)))
+                secondPointImageView.setImageDrawable(getResources().getDrawable((R.drawable.star_grey)))
+                thirdPointImageView.setImageDrawable(getResources().getDrawable((R.drawable.star_grey)))
             }
 
             1 -> {
-                firstPointImageView.visibility = View.VISIBLE
-                secondPointImageView.visibility = View.GONE
-                thirdPointImageView.visibility = View.GONE
+                firstPointImageView.setImageDrawable(getResources().getDrawable((R.drawable.star_yellow)))
+                secondPointImageView.setImageDrawable(getResources().getDrawable((R.drawable.star_grey)))
+                thirdPointImageView.setImageDrawable(getResources().getDrawable((R.drawable.star_grey)))
             }
 
             2 -> {
-                firstPointImageView.visibility = View.VISIBLE
-                secondPointImageView.visibility = View.VISIBLE
-                thirdPointImageView.visibility = View.GONE
+                firstPointImageView.setImageDrawable(getResources().getDrawable((R.drawable.star_yellow)))
+                secondPointImageView.setImageDrawable(getResources().getDrawable((R.drawable.star_yellow)))
+                thirdPointImageView.setImageDrawable(getResources().getDrawable((R.drawable.star_grey)))
             }
 
             3 -> {
-                firstPointImageView.visibility = View.VISIBLE
-                secondPointImageView.visibility = View.VISIBLE
-                thirdPointImageView.visibility = View.VISIBLE
+                firstPointImageView.setImageDrawable(getResources().getDrawable((R.drawable.star_yellow)))
+                secondPointImageView.setImageDrawable(getResources().getDrawable((R.drawable.star_yellow)))
+                thirdPointImageView.setImageDrawable(getResources().getDrawable((R.drawable.star_yellow)))
+            }
+        }
+
+        when (gamePlayEngine.game.scoreTwo) {
+            0 -> {
+                firstPointPlayerTwoImageView.setImageDrawable(getResources().getDrawable((R.drawable.star_grey)))
+                secondPointPlayerTwoImageView.setImageDrawable(getResources().getDrawable((R.drawable.star_grey)))
+                thirdPointPlayerTwoImageView.setImageDrawable(getResources().getDrawable((R.drawable.star_grey)))
+            }
+
+            1 -> {
+                firstPointPlayerTwoImageView.setImageDrawable(getResources().getDrawable((R.drawable.star_yellow)))
+                secondPointPlayerTwoImageView.setImageDrawable(getResources().getDrawable((R.drawable.star_grey)))
+                thirdPointPlayerTwoImageView.setImageDrawable(getResources().getDrawable((R.drawable.star_grey)))
+            }
+
+            2 -> {
+                firstPointPlayerTwoImageView.setImageDrawable(getResources().getDrawable((R.drawable.star_yellow)))
+                secondPointPlayerTwoImageView.setImageDrawable(getResources().getDrawable((R.drawable.star_yellow)))
+                thirdPointPlayerTwoImageView.setImageDrawable(getResources().getDrawable((R.drawable.star_grey)))
+            }
+
+            3 -> {
+                firstPointPlayerTwoImageView.setImageDrawable(getResources().getDrawable((R.drawable.star_yellow)))
+                secondPointPlayerTwoImageView.setImageDrawable(getResources().getDrawable((R.drawable.star_yellow)))
+                thirdPointPlayerTwoImageView.setImageDrawable(getResources().getDrawable((R.drawable.star_yellow)))
             }
         }
 
@@ -252,17 +279,33 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun showScoresButton(isVisible: Boolean) {
+    fun showScoresStars(isVisible: Boolean) {
         if (isVisible) {
+
+            findViewById<TextView>(R.id.playerOne).visibility = View.VISIBLE
+            findViewById<TextView>(R.id.playerTwo).visibility = View.VISIBLE
+
             firstPointImageView.visibility = View.VISIBLE
             secondPointImageView.visibility = View.VISIBLE
             thirdPointImageView.visibility = View.VISIBLE
-            scorePlayerTwoTextView.visibility = View.VISIBLE
+
+            firstPointPlayerTwoImageView.visibility = View.VISIBLE
+            secondPointPlayerTwoImageView.visibility = View.VISIBLE
+            thirdPointPlayerTwoImageView.visibility = View.VISIBLE
+
         } else {
+
+            findViewById<TextView>(R.id.playerOne).visibility = View.INVISIBLE
+            findViewById<TextView>(R.id.playerTwo).visibility = View.INVISIBLE
+
+
             firstPointImageView.visibility = View.INVISIBLE
             secondPointImageView.visibility = View.INVISIBLE
             thirdPointImageView.visibility = View.INVISIBLE
-            scorePlayerTwoTextView.visibility = View.INVISIBLE
+
+            firstPointPlayerTwoImageView.visibility = View.INVISIBLE
+            secondPointPlayerTwoImageView.visibility = View.INVISIBLE
+            thirdPointPlayerTwoImageView.visibility = View.INVISIBLE
         }
     }
 
@@ -286,12 +329,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun showInitialElement(isVisible: Boolean){
+    fun showInitialElement(isVisible: Boolean) {
         if (isVisible) {
-            logo.visibility =  View.VISIBLE
+            logo.visibility = View.VISIBLE
             appTitle.visibility = View.VISIBLE
         } else {
-            logo.visibility =  View.INVISIBLE
+            logo.visibility = View.INVISIBLE
             appTitle.visibility = View.INVISIBLE
         }
     }
@@ -302,7 +345,7 @@ class MainActivity : AppCompatActivity() {
         showInitialElement(true)
         showInfoScreen(false)
         showActionButton(false)
-        showScoresButton(false)
+        showScoresStars(false)
     }
 
     fun showPlayingState() {
@@ -310,7 +353,7 @@ class MainActivity : AppCompatActivity() {
         showInitialElement(false)
         showInfoScreen(true)
         showActionButton(true)
-        showScoresButton(true)
+        showScoresStars(true)
     }
 
     fun showFinishState() {
@@ -318,7 +361,7 @@ class MainActivity : AppCompatActivity() {
         showPlayingButton(true)
         showInfoScreen(true)
         showActionButton(false)
-        showScoresButton(false)
+        showScoresStars(false)
     }
 
 }

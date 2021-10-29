@@ -12,37 +12,72 @@
         android:id="@+id/firstPoint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_launcher_foreground"
-        android:visibility="invisible"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:src="@drawable/star_grey"
+        app:layout_constraintLeft_toRightOf="@id/playerTwo"
+        app:layout_constraintTop_toTopOf ="@id/playerOne" />
 
     <ImageView
         android:id="@+id/secondPoint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_launcher_foreground"
-        android:visibility="invisible"
+        android:src="@drawable/star_grey"
         app:layout_constraintLeft_toRightOf="@id/firstPoint"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf ="@id/playerOne"  />
 
     <ImageView
         android:id="@+id/thirdPoint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_launcher_foreground"
-        android:visibility="invisible"
+        android:src="@drawable/star_grey"
         app:layout_constraintLeft_toRightOf="@id/secondPoint"
+        app:layout_constraintTop_toTopOf ="@id/playerOne" />
+
+
+    <ImageView
+        android:id="@+id/firstPointSecond"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/star_grey"
+        app:layout_constraintLeft_toRightOf="@id/playerTwo"
+        app:layout_constraintTop_toTopOf ="@id/playerTwo"  />
+
+    <ImageView
+        android:id="@+id/secondPointSecond"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/star_grey"
+        app:layout_constraintLeft_toRightOf="@id/firstPoint"
+        app:layout_constraintTop_toTopOf ="@id/playerTwo" />
+
+    <ImageView
+        android:id="@+id/thirdPointSecond"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/star_grey"
+        app:layout_constraintLeft_toRightOf="@id/secondPoint"
+        app:layout_constraintTop_toTopOf ="@id/playerTwo" />
+
+
+    <TextView
+        android:id="@+id/playerOne"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="J1"
+        android:textSize="50dp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/scorePlayerTwo"
-        android:layout_width="match_parent"
+        android:id="@+id/playerTwo"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="J2"
-        android:textSize="70dp"
+        android:textSize="50dp"
+        android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/firstPoint" />
+        app:layout_constraintTop_toBottomOf="@id/playerOne" />
+
 
     <TextView
         android:id="@+id/textView"
@@ -92,27 +127,30 @@
          />
 
 
-    <Button
+    <ImageButton
         android:id="@+id/actionRockButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/rock"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:src="@drawable/rock"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
+    <ImageButton
         android:id="@+id/actionPaperButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/Paper"
+        android:src="@drawable/paper"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/actionRockButton" />
 
-    <Button
+    <ImageButton
         android:id="@+id/actionScissorButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/Scissor"
+        android:src="@drawable/scissor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/actionPaperButton" />
 
