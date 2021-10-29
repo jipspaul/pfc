@@ -94,6 +94,9 @@ class MainActivity : AppCompatActivity() {
 
         buttonStartGame.setOnClickListener {
             gamePlayEngine.startGame()
+
+            showScore(0)
+            textView.text = "";
         }
 
     }
