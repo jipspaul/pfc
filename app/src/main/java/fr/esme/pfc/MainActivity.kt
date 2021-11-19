@@ -28,6 +28,9 @@ class MainActivity : AppCompatActivity() {
     lateinit var secondPointPlayerTwoImageView: ImageView
     lateinit var thirdPointPlayerTwoImageView: ImageView
 
+    //action image
+    lateinit var playerTwoAction: ImageView
+    lateinit var playerOneAction: ImageView
 
     //TextView
     lateinit var textView: TextView
@@ -49,6 +52,9 @@ class MainActivity : AppCompatActivity() {
         actionScissor = findViewById(R.id.actionScissorButton)
         actionRock = findViewById(R.id.actionRockButton)
         buttonStartGame = findViewById(R.id.buttonStartGame)
+
+        playerTwoAction = findViewById(R.id.playerTwoAction)
+        playerOneAction = findViewById(R.id.playerOneAction)
 
         appTitle = findViewById(R.id.appTitle)
         logo = findViewById(R.id.logo)
@@ -252,14 +258,46 @@ class MainActivity : AppCompatActivity() {
 
         gamePlayEngine.selectAction(action)
 
+
         var result = gamePlayEngine.whoWinRound(
             gamePlayEngine.playerOneActions,
             gamePlayEngine.playerTwoActions
         )
-
+        showActions(
+            gamePlayEngine.playerOneActions,
+            gamePlayEngine.playerTwoActions
+        )
         showResult(result)
+        showPlayersActions(true)
         showScore(gamePlayEngine.game.scoreOne)
         showWinner()
+    }
+
+    private fun showActions(actionPlayerOne: Actions, actionPlayerTwo: Actions) {
+        playerTwoAction.setImageDrawable(
+            getResources().getDrawable(
+                getActionDrawableId(
+                    actionPlayerTwo
+                )
+            )
+        )
+        playerOneAction.setImageDrawable(
+            getResources().getDrawable(
+                getActionDrawableId(
+                    actionPlayerOne
+                )
+            )
+        )
+    }
+
+    private fun getActionDrawableId(action: Actions): Int {
+        when (action) {
+            Actions.ROCK -> return R.drawable.rock
+            Actions.PAPER -> return R.drawable.paper
+            Actions.SCISSOR -> return R.drawable.scissor
+            Actions.NONE -> return R.drawable.logo_esme
+        }
+
     }
 
     private fun showResult(result: RoundResult) {
@@ -342,6 +380,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun showPlayersActions(isVisible: Boolean){
+        if (isVisible) {
+            playerOneAction.visibility = View.VISIBLE
+            playerTwoAction.visibility = View.VISIBLE
+        } else {
+            playerOneAction.visibility = View.INVISIBLE
+            playerTwoAction.visibility = View.INVISIBLE
+        }
+    }
+
     /// only playing button shown
     fun showInitialState() {
         showPlayingButton(true)
@@ -349,6 +397,7 @@ class MainActivity : AppCompatActivity() {
         showInfoScreen(false)
         showActionButton(false)
         showScoresStars(false)
+        showPlayersActions(false)
     }
 
     fun showPlayingState() {
@@ -365,6 +414,8 @@ class MainActivity : AppCompatActivity() {
         showInfoScreen(true)
         showActionButton(false)
         showScoresStars(false)
+        showPlayersActions(false)
+
     }
 
 }
