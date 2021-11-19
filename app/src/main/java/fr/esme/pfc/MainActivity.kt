@@ -34,6 +34,8 @@ class MainActivity : AppCompatActivity() {
 
     //TextView
     lateinit var textView: TextView
+    lateinit var playerOneActionTextView: TextView
+    lateinit var playerTwoActionTextView: TextView
 
     //initial screen
     lateinit var appTitle: TextView
@@ -62,6 +64,9 @@ class MainActivity : AppCompatActivity() {
 
         //textview
         textView = findViewById(R.id.textView)
+        playerOneActionTextView = findViewById(R.id.playerOneActionTextView)
+        playerTwoActionTextView = findViewById(R.id.playerTwoActionTextView)
+
 
         firstPointImageView = findViewById(R.id.firstPoint)
         secondPointImageView = findViewById(R.id.secondPoint)
@@ -380,13 +385,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun showPlayersActions(isVisible: Boolean){
+    fun showPlayersActions(isVisible: Boolean) {
         if (isVisible) {
             playerOneAction.visibility = View.VISIBLE
             playerTwoAction.visibility = View.VISIBLE
+            playerOneActionTextView.visibility = View.VISIBLE
+            playerTwoActionTextView.visibility = View.VISIBLE
         } else {
             playerOneAction.visibility = View.INVISIBLE
             playerTwoAction.visibility = View.INVISIBLE
+            playerOneActionTextView.visibility = View.INVISIBLE
+            playerTwoActionTextView.visibility = View.INVISIBLE
         }
     }
 
