@@ -3,4 +3,7 @@
     <string name="rock">PIERRE</string>
     <string name="Paper">PAPIER</string>
     <string name="Scissor">Ciseaux</string>
+    <string name="title_activity_find_player">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>
