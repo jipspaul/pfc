@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide
 import fr.esme.pfc.R
 import fr.esme.pfc.entities.Player
 
-class CustomAdapter(private val dataSet: Array<Player>, private val onCLick: () -> Unit) :
+class CustomAdapter(private val dataSet: Array<Player>, private val onCLick: (player : Player) -> Unit) :
     RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
 
     /**
@@ -50,7 +50,7 @@ class CustomAdapter(private val dataSet: Array<Player>, private val onCLick: () 
             .into(viewHolder.avatar)
 
         viewHolder.avatar.setOnClickListener {
-            onCLick()
+            onCLick(dataSet[position])
         }
 
     }

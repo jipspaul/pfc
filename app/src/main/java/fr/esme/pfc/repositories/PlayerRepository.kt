@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import fr.esme.pfc.entities.Player
-import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.runOnUiThread
 
 class PlayerRepository {
@@ -24,7 +23,7 @@ class PlayerRepository {
 
     fun loadDataFromMockServer(context: Context) {
 
-        //start thread every 2sec add player
+        //TODO start thread every 2sec add player
         Thread {
             for (player in players) {
                 Thread.sleep(2000)
