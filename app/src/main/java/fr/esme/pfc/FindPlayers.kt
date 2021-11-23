@@ -1,10 +1,11 @@
 package fr.esme.pfc
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import fr.esme.pfc.adapters.CustomAdapter
-import fr.esme.pfc.entities.Player
+import fr.esme.pfc.repositories.PlayerRepository
 import kotlinx.android.synthetic.main.activity_find_players.*
 
 
@@ -18,22 +19,24 @@ class FindPlayers : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        var players = arrayOf(
-            Player("tte", "joueur 1", 10),
-            Player("tte", "joueur 1", 10),
-            Player("tte", "joueur 1", 10),
-            Player("tte", "joueur 1", 10),
-            Player("tte", "joueur 1", 10),
-            Player("tte", "joueur 1", 10),
-            Player("tte", "joueur 1", 10),
-            Player("tte", "joueur 1", 10)
-        )
+        PlayerRepository().getPlayers(this).observe(this,
+            androidx.lifecycle.Observer {
+
+                runOnUiThread {
+
+                    val llm = LinearLayoutManager(this)
+                    llm.orientation = LinearLayoutManager.VERTICAL
+                    playerList.setLayoutManager(llm)
+
+                    playerList.adapter = CustomAdapter(it.toTypedArray()) {
+                        Log.d("TEST", "on click from adapter")
+                    }
+
+                }
+
+            })
 
 
-        val llm = LinearLayoutManager(this)
-        llm.orientation = LinearLayoutManager.VERTICAL
-        playerList.setLayoutManager(llm)
-        playerList.adapter = CustomAdapter(players)
     }
 }
 

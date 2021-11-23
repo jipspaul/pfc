@@ -3,12 +3,14 @@ package fr.esme.pfc.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import fr.esme.pfc.R
 import fr.esme.pfc.entities.Player
 
-class CustomAdapter(private val dataSet: Array<Player>) :
+class CustomAdapter(private val dataSet: Array<Player>, private val onCLick: () -> Unit) :
     RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
 
     /**
@@ -17,9 +19,12 @@ class CustomAdapter(private val dataSet: Array<Player>) :
      */
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textView: TextView
+        val avatar: ImageView
+
         init {
             // Define click listener for the ViewHolder's View.
             textView = view.findViewById(R.id.textView)
+            avatar = view.findViewById(R.id.avatar)
         }
     }
 
@@ -38,6 +43,16 @@ class CustomAdapter(private val dataSet: Array<Player>) :
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
         viewHolder.textView.text = dataSet[position].name
+
+        Glide.with(viewHolder.avatar.context)
+            .load(dataSet[position].imageUrl)
+            .circleCrop()
+            .into(viewHolder.avatar)
+
+        viewHolder.avatar.setOnClickListener {
+            onCLick()
+        }
+
     }
 
     // Return the size of your dataset (invoked by the layout manager)
