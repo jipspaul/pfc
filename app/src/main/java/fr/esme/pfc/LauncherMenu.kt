@@ -1,9 +1,9 @@
 package fr.esme.pfc
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_launcher_menu.*
 import kotlinx.android.synthetic.main.activity_main.buttonStartGame
 
@@ -24,6 +24,11 @@ class LauncherMenu : AppCompatActivity() {
 
         buttonFindPlayer.setOnClickListener {
             val intent = Intent(this, FindPlayers::class.java)
+            startActivity(intent)
+        }
+
+        buttonStartTournament.setOnClickListener {
+            val intent = Intent(this, TournamentActivity::class.java)
             startActivity(intent)
         }
     }
