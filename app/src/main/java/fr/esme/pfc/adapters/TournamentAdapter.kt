@@ -5,15 +5,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import fr.esme.pfc.GameResult
 import fr.esme.pfc.R
 import fr.esme.pfc.entities.GameTournament
 import fr.esme.pfc.entities.Player
 
 class TournamentAdapter(
     private val dataSet: Array<GameTournament>,
-    private val onCLick: (player: Player) -> Unit
+    private val onCLick: (currentGame: Int) -> Unit
 ) :
     RecyclerView.Adapter<TournamentAdapter.ViewHolder>() {
 
@@ -28,12 +30,17 @@ class TournamentAdapter(
         val avatarPlayerTwo: ImageView
         val playerTwoNametextView: TextView
 
+        val tournamentCard: ConstraintLayout
+
         init {
             // Define click listener for the ViewHolder's View.
             avatarPlayerOne = view.findViewById(R.id.avatarPlayerOne)
             playerOneNametextView = view.findViewById(R.id.playerOneTextView)
             avatarPlayerTwo = view.findViewById(R.id.avatarPlayerTwo)
             playerTwoNametextView = view.findViewById(R.id.playerTwoTextView)
+
+            tournamentCard = view.findViewById(R.id.tournamentCard)
+
         }
     }
 
@@ -59,7 +66,25 @@ class TournamentAdapter(
             .load(dataSet[position].userTwo.imageUrl)
             .circleCrop()
             .into(viewHolder.avatarPlayerTwo)
-        viewHolder.playerTwoNametextView.text = dataSet[position].userOne.name
+        viewHolder.playerTwoNametextView.text = dataSet[position].userTwo.name
+
+
+        when (dataSet[position].gameResult) {
+            GameResult.USER1WIN -> {
+                viewHolder.avatarPlayerTwo.alpha = 0.3f
+                viewHolder.playerTwoNametextView.alpha = 0.3f
+            }
+            GameResult.USER2WIN -> {
+                viewHolder.avatarPlayerOne.alpha = 0.3f
+                viewHolder.playerOneNametextView.alpha = 0.3f
+            }
+            GameResult.STILL_PLAYING -> {
+            }
+        }
+
+        viewHolder.tournamentCard.setOnClickListener {
+            onCLick(position) //TODO give both player
+        }
 
     }
 

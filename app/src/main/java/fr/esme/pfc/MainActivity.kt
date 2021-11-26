@@ -1,6 +1,8 @@
 package fr.esme.pfc
 
-import androidx.appcompat.app.AppCompatActivity
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
@@ -8,7 +10,9 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import fr.esme.pfc.entities.Player
 
 
 class MainActivity : AppCompatActivity() {
@@ -188,6 +192,28 @@ class MainActivity : AppCompatActivity() {
             actionPaper.visibility = View.GONE
             actionScissor.visibility = View.GONE
             actionRock.visibility = View.GONE
+
+
+            when (gamePlayEngine.whoWinTheGame()) {
+
+                GameResult.USER1WIN -> {
+                    val resultIntent = Intent()
+                    resultIntent.putExtra("WINNER", GameResult.USER1WIN)
+                    setResult(Activity.RESULT_OK, resultIntent)
+
+                }
+                GameResult.USER2WIN -> {
+                    val resultIntent = Intent()
+                    resultIntent.putExtra("WINNER", GameResult.USER2WIN)
+                    setResult(Activity.RESULT_OK, resultIntent)
+
+                }
+                GameResult.STILL_PLAYING -> {
+                }
+            }
+
+            finish()
+
         }
 
     }
@@ -427,5 +453,15 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+
+    companion object {
+
+        fun startGame(activity: Context, player: Player) {
+            val intent = Intent(activity, MainActivity::class.java)
+            activity.startActivity(intent)
+        }
+
+
+    }
 }
 
