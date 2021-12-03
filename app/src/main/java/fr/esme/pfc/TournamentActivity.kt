@@ -2,7 +2,6 @@ package fr.esme.pfc
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -40,17 +39,39 @@ class TournamentActivity : AppCompatActivity() {
     val games: ArrayList<GameTournament> =
         TournamentUseCase().generateTournamentList(players.toList())
 
-    var currentGame : Int = 0
+    var currentGame: Int = 0
 
     val getContent = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) {
-
-
         when (it.data?.extras?.get("WINNER") as GameResult) {
             GameResult.USER1WIN -> games[currentGame].gameResult = GameResult.USER1WIN
-            GameResult.USER2WIN ->  games[currentGame].gameResult = GameResult.USER2WIN
-            GameResult.STILL_PLAYING ->  games[currentGame].gameResult = GameResult.USER1WIN //TODO remove
+            GameResult.USER2WIN -> games[currentGame].gameResult = GameResult.USER2WIN
+            GameResult.STILL_PLAYING -> games[currentGame].gameResult =
+                GameResult.USER1WIN //TODO remove
+        }
+
+        if (TournamentUseCase().isGameFinish(games)) {
+
+            var winners = TournamentUseCase().getWinners(games)
+
+            if(games.size == 1 ){
+                showWinner(games[0])
+            } else {
+                games.clear()
+                games.addAll(TournamentUseCase().generateTournamentList(winners))
+            }
+        }
+
+
+    }
+
+    private fun showWinner(gameTournament: GameTournament) {
+        when(gameTournament.gameResult){
+
+            GameResult.USER1WIN -> showWinnerTextView.text = "WINNER PLAYER ONE"
+            GameResult.USER2WIN -> showWinnerTextView.text = "WINNER PLAYER TWO"
+            GameResult.STILL_PLAYING -> showWinnerTextView.text = "WINNER PLAYER ONE"
         }
     }
 
@@ -79,7 +100,6 @@ class TournamentActivity : AppCompatActivity() {
                 currentGame = it
 
                 runOnUiThread {
-
                     val intent = Intent(this, MainActivity::class.java)
                     getContent.launch(intent)
                 }
